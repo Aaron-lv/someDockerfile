@@ -1,0 +1,31 @@
+sunert_scripts:
+  image: aaron2397/sunert_scripts:latest
+  container_name: sunert_scripts
+  restart: always
+  tty: true
+  volumes:
+    - ./logs1:/logs
+    #- ./my_crontab_list.sh:/pss/my_crontab_list.sh #挂载自定义任务文件
+  environment:
+    #使用自定义定任务之后，上面volumes挂载之后这里配置对应的文件名
+    #- CUSTOM_LIST_FILE=my_crontab_list.sh #自定任务文件名
+    #- CUSTOM_LIST_MERGE_TYPE=overwrite #默认值append自定文件的使用方式append追加默认之后，overwrite覆盖默认任务
+    # 注意环境变量填写值的时候一律不需要引号（""或者''）下面这些只是事例，根据自己的需求增加删除
+    # 公用通知相关环境变量
+    - TG_BOT_TOKEN=
+    - TG_USER_ID=
+    # 快手极速版Cookie(多账号用&分割)
+    - KS_TOKEN=
+    # 百度极速版Cookie(多账号用&分割)
+    - BAIDU_CASH=30 #设置百度极速版自动提现金额，可选项(5,30,50,100,800)
+    - BAIDU_COOKIE=
+    #中青看点通知开关默认当转盘次数为50或者100并且余额大于10元时推送通知(设置为true时，开启推送)
+    - YOUTH_NOTIFY_CONTROL=true
+  env_file:
+    #中青看点env
+    - ./env/YOUTH_HEADER
+    - ./env/YOUTH_START
+    - ./env/YOUTH_LOOK
+    - ./env/YOUTH_TIME
+    - ./env/YOUTH_READ
+    - ./env/YOUTH_READ2
