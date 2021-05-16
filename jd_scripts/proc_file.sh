@@ -36,6 +36,8 @@ else
 fi
 
 
+## 修改赚京豆定时
+sed -i "/jd_syj.js/s/$(sed "s/\*/\\\*/g" $mergedListFile | sed "s/\//\\\\\//g" | grep jd_syj.js | awk '{print $1,$2,$3,$4,$5}')/7 * * * */g" $mergedListFile
 ## 修改京喜财富岛定时
 sed -i "/jd_cfd.js/s/$(sed "s/\*/\\\*/g" $mergedListFile | sed "s/\//\\\\\//g" | grep jd_cfd.js | awk '{print $1,$2,$3,$4,$5}')/10 *\/2 * * */g" $mergedListFile
 ## 修改闪购盲盒定时
