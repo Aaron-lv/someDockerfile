@@ -11,7 +11,8 @@ function addCron() {
                 continue
             else
                 jsname_log="$(echo $jsname | cut -d \. -f1)"
-                jsname_cn="$(cat /scripts/$jsname | grep -oE "/?/?const.*\$" | cut -d \' -f2 | cut -d \" -f2 | sed -n "1p")"
+                jsname_cn="$(cat /scripts/$jsname | grep -oE "/?/?new Env\('.*'\)" | cut -d\' -f2)"
+                [[ -z "$jsname_cn" ]] && jsname_cn=$jsname_log
                 jscron="$(cat /scripts/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
                 if [ -z "$jscron" ]; then
                     jscron="$(cat /scripts/$jsname | grep ^[0-9] | awk '{print $1,$2,$3,$4,$5}' | egrep -v "[a-zA-Z]|:|\." | sort | uniq | head -n 1)"
