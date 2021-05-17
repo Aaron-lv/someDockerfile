@@ -12,6 +12,7 @@ function addCron() {
             else
                 jsname_log="$(echo $jsname | cut -d \. -f1)"
                 jsname_cn="$(cat /scripts/$jsname | grep -oE "/?/?new Env\('.*'\)" | cut -d\' -f2)"
+                [[ -z "$jsname_cn" ]] && jsname_cn="$(cat /scripts/$jsname | grep -oE "/?/?tag\=.*" | cut -d"=" -f2)"
                 [[ -z "$jsname_cn" ]] && jsname_cn=$jsname_log
                 jscron="$(cat /scripts/$jsname | grep -oE "/?/?cron \".*\"" | cut -d\" -f2)"
                 if [ -z "$jscron" ]; then
