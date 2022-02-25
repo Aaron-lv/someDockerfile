@@ -1,7 +1,7 @@
 FROM node:lts-alpine3.12
 
 LABEL AUTHOR="none" \
-        VERSION=0.1.5
+        VERSION=0.1.6
 
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
         LANG=zh_CN.UTF-8 \
@@ -25,11 +25,9 @@ RUN set -ex \
 RUN git clone -b $REPO_BRANCH $REPO_URL /scripts \
         && cd /scripts \
         && mkdir logs \
-        && npm install -g pnpm \
-        && pnpm install -g pm2 \
+        && yarn global add yarn pm2 \
         && rm -rf /root/.npm \
-        && pnpm install --prod \
-        && rm -rf /root/.pnpm-store
+        && yarn install --prod
 
 RUN mkdir /jds \
         && cd /jds \

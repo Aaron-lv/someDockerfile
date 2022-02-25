@@ -4,6 +4,15 @@ function syncRepo() {
     cd /scripts
     echo "设定远程仓库地址..."
     git remote set-url origin $REPO_URL
+    if [[ ! "$REPO_URL" =~ "http" ]]; then
+        if [ ! -f  "/root/.ssh/id_rsa" ]; then
+            mkdir -p /root/.ssh
+            echo -e "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
+            chmod 600 /root/.ssh/id_rsa
+            apk add openssh-client
+            ssh-keyscan github.com > /root/.ssh/known_hosts
+        fi
+    fi
     echo "git pull拉取最新代码..."
     git reset --hard
     git pull origin $REPO_BRANCH
@@ -36,7 +45,7 @@ fi
 
 if [ ! -d "/scripts/node_modules" ]; then
     echo "容器首次启动，执行npm install..."
-    pnpm install --prod
+    yarn install --prod
     if [ $? -ne 0 ]; then
         echo "npm首次启动安装依赖失败❌，exit，restart"
         exit 1
@@ -46,7 +55,7 @@ if [ ! -d "/scripts/node_modules" ]; then
 else
     if [ "$before_package_json" != "$(cat /scripts/package.json)" ]; then
         echo "package.json有更新，执行npm install..."
-        pnpm install --prod
+        yarn install --prod
         if [ $? -ne 0 ]; then
             echo "package.json有更新，执行安装依赖失败❌，跳过"
             exit 1
