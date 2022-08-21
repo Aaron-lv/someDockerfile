@@ -9,6 +9,7 @@ function syncRepo() {
             mkdir -p /root/.ssh
             echo -e "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
             chmod 600 /root/.ssh/id_rsa
+            sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
             apk add openssh-client
             ssh-keyscan github.com > /root/.ssh/known_hosts
         fi
